@@ -9,5 +9,10 @@ target 'ZMNetworkHelper' do
 
 pod 'AFNetworking'
 pod 'ReactiveObjC'
+pod 'SDCycleScrollView'
+pod 'Masonry'
+pod 'SDWebImage'
+pod 'MJRefresh'
+pod 'MBProgressHUD'
 
 end
