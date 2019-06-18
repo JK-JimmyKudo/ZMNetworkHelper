@@ -14,6 +14,7 @@
 		8555587822B87DEF00A24DDD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8555587722B87DEF00A24DDD /* Assets.xcassets */; };
 		8555587B22B87DEF00A24DDD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8555587922B87DEF00A24DDD /* LaunchScreen.storyboard */; };
 		8555587E22B87DEF00A24DDD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8555587D22B87DEF00A24DDD /* main.m */; };
+		8555588722B8813E00A24DDD /* ZMNetworkHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8555588622B8813E00A24DDD /* ZMNetworkHelper.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,8 @@
 		8555587A22B87DEF00A24DDD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8555587C22B87DEF00A24DDD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8555587D22B87DEF00A24DDD /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		8555588522B8813D00A24DDD /* ZMNetworkHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZMNetworkHelper.h; sourceTree = "<group>"; };
+		8555588622B8813E00A24DDD /* ZMNetworkHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZMNetworkHelper.m; sourceTree = "<group>"; };
 		AFA2AAD1F78248BF968CCB2B /* libPods-ZMNetworkHelper.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ZMNetworkHelper.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA16D3B8C0B4254E39F9CE04 /* Pods-ZMNetworkHelper.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZMNetworkHelper.debug.xcconfig"; path = "Target Support Files/Pods-ZMNetworkHelper/Pods-ZMNetworkHelper.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -73,6 +76,7 @@
 		8555586D22B87DE900A24DDD /* ZMNetworkHelper */ = {
 			isa = PBXGroup;
 			children = (
+				8555588422B8813500A24DDD /* Tool */,
 				8555586E22B87DE900A24DDD /* AppDelegate.h */,
 				8555586F22B87DE900A24DDD /* AppDelegate.m */,
 				8555587122B87DE900A24DDD /* ViewController.h */,
@@ -84,6 +88,15 @@
 				8555587D22B87DEF00A24DDD /* main.m */,
 			);
 			path = ZMNetworkHelper;
+			sourceTree = "<group>";
+		};
+		8555588422B8813500A24DDD /* Tool */ = {
+			isa = PBXGroup;
+			children = (
+				8555588522B8813D00A24DDD /* ZMNetworkHelper.h */,
+				8555588622B8813E00A24DDD /* ZMNetworkHelper.m */,
+			);
+			path = Tool;
 			sourceTree = "<group>";
 		};
 		D64608898D199FC1AAF21BA7 /* Pods */ = {
@@ -215,6 +228,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8555587322B87DE900A24DDD /* ViewController.m in Sources */,
+				8555588722B8813E00A24DDD /* ZMNetworkHelper.m in Sources */,
 				8555587E22B87DEF00A24DDD /* main.m in Sources */,
 				8555587022B87DE900A24DDD /* AppDelegate.m in Sources */,
 			);

@@ -7,6 +7,8 @@
 //
 
 #import "ViewController.h"
+#import "ZMNetworkHelper.h"
+
 
 @interface ViewController ()
 
@@ -17,6 +19,19 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    NSString *url = @"http://10.1.236.163:8080/bchz-web-server/app/IcAdChannelInfo/appIndexPosition";
+    
+    NSDictionary *dic = @{
+                          @"city":@"北京市"
+                          };
+    
+    [ZMNetworkHelper requestPOSTWithRequestURL:url parameters:dic success:^(id responseObject) {
+        NSLog(@"responseObject ==  %@",responseObject);
+        
+        
+    } failure:^(NSError *error) {
+        
+    }];
     
     
     
