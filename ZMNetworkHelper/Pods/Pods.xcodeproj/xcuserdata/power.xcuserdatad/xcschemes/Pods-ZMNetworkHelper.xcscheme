@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "944A8C8B246E6178FFD483B9E87D30DB"
+               BlueprintIdentifier = "1F1C826BCA03BE06A646AB1C4488556B"
                BuildableName = "libPods-ZMNetworkHelper.a"
                BlueprintName = "Pods-ZMNetworkHelper"
                ReferencedContainer = "container:Pods.xcodeproj">

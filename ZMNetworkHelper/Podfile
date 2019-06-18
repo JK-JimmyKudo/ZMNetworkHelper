@@ -8,5 +8,6 @@ target 'ZMNetworkHelper' do
   # Pods for ZMNetworkHelper
 
 pod 'AFNetworking'
+pod 'ReactiveObjC'
 
 end

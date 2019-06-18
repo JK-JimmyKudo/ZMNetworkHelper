@@ -92,7 +92,6 @@
 				EA16D3B8C0B4254E39F9CE04 /* Pods-ZMNetworkHelper.debug.xcconfig */,
 				4EBA7E68DE7AFCB154A1A7F2 /* Pods-ZMNetworkHelper.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -340,6 +339,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 975BDH8M3G;
 				INFOPLIST_FILE = ZMNetworkHelper/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -358,6 +358,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 975BDH8M3G;
 				INFOPLIST_FILE = ZMNetworkHelper/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
