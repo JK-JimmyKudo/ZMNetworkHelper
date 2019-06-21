@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		26974255840382369B7E031E /* libPods-ZMNetworkHelper.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AFA2AAD1F78248BF968CCB2B /* libPods-ZMNetworkHelper.a */; };
+		8544933E22BCCC4B00008299 /* HHHViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8544933D22BCCC4B00008299 /* HHHViewController.swift */; };
 		8555587022B87DE900A24DDD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8555586F22B87DE900A24DDD /* AppDelegate.m */; };
 		8555587322B87DE900A24DDD /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8555587222B87DE900A24DDD /* ViewController.m */; };
 		8555587622B87DE900A24DDD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8555587422B87DE900A24DDD /* Main.storyboard */; };
@@ -19,6 +20,8 @@
 
 /* Begin PBXFileReference section */
 		4EBA7E68DE7AFCB154A1A7F2 /* Pods-ZMNetworkHelper.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ZMNetworkHelper.release.xcconfig"; path = "Target Support Files/Pods-ZMNetworkHelper/Pods-ZMNetworkHelper.release.xcconfig"; sourceTree = "<group>"; };
+		8544933C22BCCC4A00008299 /* ZMNetworkHelper-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ZMNetworkHelper-Bridging-Header.h"; sourceTree = "<group>"; };
+		8544933D22BCCC4B00008299 /* HHHViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HHHViewController.swift; sourceTree = "<group>"; };
 		8555586B22B87DE900A24DDD /* ZMNetworkHelper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZMNetworkHelper.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8555586E22B87DE900A24DDD /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		8555586F22B87DE900A24DDD /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -86,6 +89,8 @@
 				8555587922B87DEF00A24DDD /* LaunchScreen.storyboard */,
 				8555587C22B87DEF00A24DDD /* Info.plist */,
 				8555587D22B87DEF00A24DDD /* main.m */,
+				8544933D22BCCC4B00008299 /* HHHViewController.swift */,
+				8544933C22BCCC4A00008299 /* ZMNetworkHelper-Bridging-Header.h */,
 			);
 			path = ZMNetworkHelper;
 			sourceTree = "<group>";
@@ -141,6 +146,7 @@
 				TargetAttributes = {
 					8555586A22B87DE900A24DDD = {
 						CreatedOnToolsVersion = 10.2.1;
+						LastSwiftMigration = 1020;
 					};
 				};
 			};
@@ -229,6 +235,7 @@
 			files = (
 				8555587322B87DE900A24DDD /* ViewController.m in Sources */,
 				8555588722B8813E00A24DDD /* ZMNetworkHelper.m in Sources */,
+				8544933E22BCCC4B00008299 /* HHHViewController.swift in Sources */,
 				8555587E22B87DEF00A24DDD /* main.m in Sources */,
 				8555587022B87DE900A24DDD /* AppDelegate.m in Sources */,
 			);
@@ -373,6 +380,7 @@
 			baseConfigurationReference = EA16D3B8C0B4254E39F9CE04 /* Pods-ZMNetworkHelper.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 975BDH8M3G;
 				INFOPLIST_FILE = ZMNetworkHelper/Info.plist;
@@ -383,6 +391,9 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "Henan-XinKangqiao.ZMNetworkHelper";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "ZMNetworkHelper/ZMNetworkHelper-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -392,6 +403,7 @@
 			baseConfigurationReference = 4EBA7E68DE7AFCB154A1A7F2 /* Pods-ZMNetworkHelper.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 975BDH8M3G;
 				INFOPLIST_FILE = ZMNetworkHelper/Info.plist;
@@ -402,6 +414,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "Henan-XinKangqiao.ZMNetworkHelper";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "ZMNetworkHelper/ZMNetworkHelper-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

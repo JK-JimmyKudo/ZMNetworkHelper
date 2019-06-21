@@ -28,8 +28,6 @@ static AFHTTPSessionManager *manager ;
 
         manager.requestSerializer.timeoutInterval = 20;
         manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/plain",@"text/json", @"text/javascript",@"text/html" ,nil];
-        
-        
     });
     return manager;
 }

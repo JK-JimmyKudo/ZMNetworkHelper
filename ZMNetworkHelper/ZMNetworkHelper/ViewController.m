@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 #import "ZMNetworkHelper.h"
-
+#import "ZMNetworkHelper-Swift.h"
 
 @interface ViewController ()
 
@@ -18,6 +18,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+
+
     
     NSString *url = @"http://10.1.236.163:8080/bchz-web-server/app/IcAdChannelInfo/appIndexPosition";
     
