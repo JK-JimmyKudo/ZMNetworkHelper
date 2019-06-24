@@ -21,12 +21,12 @@ class HHHViewController: UIViewController {
         
         
         
-        ZMNetworkHelper.requestGET(withRequestURL: str, parameters: dict, success: { (info) in
-          
-            
-        }) { (error) in
-            
-        };
+//        ZMNetworkHelper.sharedInstance()?.requestGET(withRequestURL: str, parameters: dict, success: { (info) in
+//          
+//            
+//        }) { (error) in
+//            
+//        };
         
         // Do any additional setup after loading the view.
     }
