@@ -21,11 +21,11 @@ typedef void (^ _Nullable Progress)(NSProgress * _Nullable progress);
 ///下载成功的Blcok
 typedef void (^ _Nullable DownLoadSuccess)(NSURLResponse * _Nonnull response, NSURL * _Nullable filePath);
 
-@interface ZMNetworkHelper : NSObject
+@interface ZYNetworkHelper : NSObject
 
 //+ (AFHTTPSessionManager *_Nullable)sharedInstance;
 
-+ (ZMNetworkHelper *_Nullable)sharedInstance;
++ (ZYNetworkHelper *_Nullable)sharedInstance;
 
 #pragma mark - GET请求
 /**

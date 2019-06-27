@@ -23,6 +23,7 @@ PODS:
   - SDWebImage (5.0.6):
     - SDWebImage/Core (= 5.0.6)
   - SDWebImage/Core (5.0.6)
+  - YYCache (1.0.4)
 
 DEPENDENCIES:
   - AFNetworking
@@ -32,6 +33,7 @@ DEPENDENCIES:
   - ReactiveObjC
   - SDCycleScrollView
   - SDWebImage
+  - YYCache
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -42,6 +44,7 @@ SPEC REPOS:
     - ReactiveObjC
     - SDCycleScrollView
     - SDWebImage
+    - YYCache
 
 SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
@@ -51,7 +54,8 @@ SPEC CHECKSUMS:
   ReactiveObjC: 011caa393aa0383245f2dcf9bf02e86b80b36040
   SDCycleScrollView: b3c9a5ed840c771c4938978174c7c9d9feefeb96
   SDWebImage: 920f1a2ff1ca8296ad34f6e0510a1ef1d70ac965
+  YYCache: 8105b6638f5e849296c71f331ff83891a4942952
 
-PODFILE CHECKSUM: fb069c601241426942de57267643da4e187871e9
+PODFILE CHECKSUM: 67fce8142ef247e56fe44ec80be7800b1d514a62
 
 COCOAPODS: 1.6.1

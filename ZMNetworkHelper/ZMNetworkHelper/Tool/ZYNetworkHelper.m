@@ -6,15 +6,16 @@
 //  Copyright © 2017年 Brance. All rights reserved.
 //
 
-#import "ZMNetworkHelper.h"
+#import "ZYNetworkHelper.h"
 #import "AFNetworkActivityIndicatorManager.h"
+#import "ZYCacheHelper.h"
 
-@implementation ZMNetworkHelper
+@implementation ZYNetworkHelper
 
 static AFHTTPSessionManager *manager = nil ;
 
-static ZMNetworkHelper *httpRequest = nil;
-+ (ZMNetworkHelper *)sharedInstance
+static ZYNetworkHelper *httpRequest = nil;
++ (ZYNetworkHelper *)sharedInstance
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -60,7 +61,7 @@ static ZMNetworkHelper *httpRequest = nil;
 
 - (void)requestGETWithRequestURL:(NSString *)requestURLString parameters:(id)parameters success:(Success)success failure:(Failure)failure{
     
-    [[ZMNetworkHelper sessionManager] GET:requestURLString parameters:parameters progress:^(NSProgress * _Nonnull downloadProgress) {
+    [[ZYNetworkHelper sessionManager] GET:requestURLString parameters:parameters progress:^(NSProgress * _Nonnull downloadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         success(responseObject);
@@ -71,10 +72,19 @@ static ZMNetworkHelper *httpRequest = nil;
 }
 
 - (void)requestPOSTWithRequestURL:(NSString *)requestURLString parameters:(id)parameters success:(Success)success failure:(Failure)failure{
-    [[ZMNetworkHelper sessionManager] POST:requestURLString parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
+    [[ZYNetworkHelper sessionManager] POST:requestURLString parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        id request = [ZYCacheHelper getResponseCacheForKey:@"kkkk"];
+        
+        NSLog(@"request ==  %@",request);
+        
+        
+        [ZYCacheHelper saveResponseCache:responseObject forKey:@"kkkk"];
+        
         success(responseObject);
+        
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"%@",error);
         failure(error);
@@ -95,7 +105,7 @@ static ZMNetworkHelper *httpRequest = nil;
 -(void)requestPOSTWithRequestURL:(NSString *)URLString parameters:(NSDictionary *)parameters fileModelArray:(NSArray<WYFileModel *> *)modelArray progress:(Progress)progress success:(Success)success failure:(Failure)failure{
     
     
-    AFHTTPSessionManager *mannger = [ZMNetworkHelper sessionManager];
+    AFHTTPSessionManager *mannger = [ZYNetworkHelper sessionManager];
     
     [mannger POST:URLString parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         
@@ -140,7 +150,7 @@ static ZMNetworkHelper *httpRequest = nil;
 
 -(void) requestPOSTWithRequestURL:(NSString *)URLString parameters:(NSDictionary *)parameters fileModel:(WYFileModel *)fileModel progress:(Progress)progress success:(Success)success failure:(Failure)failure{
     
-    AFHTTPSessionManager *mannger = [ZMNetworkHelper sessionManager];
+    AFHTTPSessionManager *mannger = [ZYNetworkHelper sessionManager];
 
     [manager.requestSerializer setValue:@"multipart/form-data" forHTTPHeaderField:@"Content-Type"];
 
@@ -192,7 +202,7 @@ static ZMNetworkHelper *httpRequest = nil;
  */
 - (NSURLSessionDownloadTask *)downLoadWithURL:(NSString *)URLString fileSavePath:(NSString *)filePath progress:(Progress)progress success:(DownLoadSuccess)success failure:(Failure)failure {
     
-    AFHTTPSessionManager *mannger = [ZMNetworkHelper sessionManager];
+    AFHTTPSessionManager *mannger = [ZYNetworkHelper sessionManager];
     
     // 下载任务
     /**

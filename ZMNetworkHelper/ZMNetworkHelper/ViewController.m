@@ -20,14 +20,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-
-
+    NSDictionary *dic = @{@"city":@"北京市",
+                          @"cityCode":@"110100",
+                          @"pageIndex":[NSString stringWithFormat:@"%@",@"0"],
+                          @"pageSize":@"10"};
     
-    NSString *url = @"http://10.1.236.163:8080/bchz-web-server/app/IcAdChannelInfo/appIndexPosition";
+    NSString *url = @"http://10.1.236.163:8080/bchz-web-server/app/IcAdChannelInfo/appIndexInfo";
     
-    NSDictionary *dic = @{
-                          @"city":@"北京市"
-                          };
+
     
     [[ZMNetworkHelper sharedInstance] requestPOSTWithRequestURL:url parameters:dic success:^(id responseObject) {
         
@@ -40,31 +40,31 @@
     
     
     
-    NSString *requestURL = [NSString stringWithFormat:@"%@%@", @"http://10.1.236.163:8080/bchz-web-server", @"/app/IcUserInfo/uploadImgFile"];
-    
-    UIImage *image = [UIImage imageNamed:@"pic_zwwl"];
-    NSData *fileData = UIImageJPEGRepresentation(image, 0.05);
-
-    WYFileModel *model = [[WYFileModel alloc] init];
-    model.fileName = @"picture";
-    model.fileData = fileData;
-    model.fileImage = image;
-    model.mimeType = @"image/jpeg";
-    model.folderName = @"BeiChen.jpg";
-    
-    
-    
-    NSMutableDictionary *par = [NSMutableDictionary dictionary];
-    [[ZMNetworkHelper sharedInstance]requestPOSTWithRequestURL:requestURL parameters:par fileModel:model progress:^(NSProgress * _Nullable progress) {
-        
-    } success:^(id  _Nullable responseObject) {
-       
-        NSLog(@"responseObject ==  %@",responseObject);
-        
-    } failure:^(NSError * _Nullable error) {
-        
-    }];
-    
+//    NSString *requestURL = [NSString stringWithFormat:@"%@%@", @"http://10.1.236.163:8080/bchz-web-server", @"/app/IcUserInfo/uploadImgFile"];
+//
+//    UIImage *image = [UIImage imageNamed:@"pic_zwwl"];
+//    NSData *fileData = UIImageJPEGRepresentation(image, 0.05);
+//
+//    WYFileModel *model = [[WYFileModel alloc] init];
+//    model.fileName = @"picture";
+//    model.fileData = fileData;
+//    model.fileImage = image;
+//    model.mimeType = @"image/jpeg";
+//    model.folderName = @"BeiChen.jpg";
+//
+//
+//
+//    NSMutableDictionary *par = [NSMutableDictionary dictionary];
+//    [[ZMNetworkHelper sharedInstance]requestPOSTWithRequestURL:requestURL parameters:par fileModel:model progress:^(NSProgress * _Nullable progress) {
+//
+//    } success:^(id  _Nullable responseObject) {
+//
+//        NSLog(@"responseObject ==  %@",responseObject);
+//
+//    } failure:^(NSError * _Nullable error) {
+//
+//    }];
+//
     
     
     
