@@ -78,7 +78,7 @@ static ZYNetworkHelper *httpRequest = nil;
         
         id request = [ZYCacheHelper getResponseCacheForKey:@"kkkk"];
         
-        NSLog(@"request ==  %@",request);
+//        NSLog(@"request ==  %@",request);
         
         
         [ZYCacheHelper saveResponseCache:responseObject forKey:@"kkkk"];
