@@ -88,40 +88,27 @@
     
     
    
+    NSString *url = [self URLDecodedString:@"http%3a%2f%2ffapiao.hnxkqwy.com%3a8088%2fwx%2finvoice%2fcreateInvoice.html%3fmm%3dAaFz%2fmV%2bedV1C93LqJQWytCGYVBeZOQHi%2bs83xEzIcNcVHlQcJVlFw%3d%3d"];
+    NSLog(@"url ==  %@",url);
     
-    
-    
-//    NSString *requestURL = [NSString stringWithFormat:@"%@%@", @"http://10.1.236.163:8080/bchz-web-server", @"/app/IcUserInfo/uploadImgFile"];
-//
-//    UIImage *image = [UIImage imageNamed:@"pic_zwwl"];
-//    NSData *fileData = UIImageJPEGRepresentation(image, 0.05);
-//
-//    WYFileModel *model = [[WYFileModel alloc] init];
-//    model.fileName = @"picture";
-//    model.fileData = fileData;
-//    model.fileImage = image;
-//    model.mimeType = @"image/jpeg";
-//    model.folderName = @"BeiChen.jpg";
-//
-//
-//
-//    NSMutableDictionary *par = [NSMutableDictionary dictionary];
-//    [[ZMNetworkHelper sharedInstance]requestPOSTWithRequestURL:requestURL parameters:par fileModel:model progress:^(NSProgress * _Nullable progress) {
-//
-//    } success:^(id  _Nullable responseObject) {
-//
-//        NSLog(@"responseObject ==  %@",responseObject);
-//
-//    } failure:^(NSError * _Nullable error) {
-//
-//    }];
-//
+
     
 }
 
 -(void)GetBtnClick:(UIButton *)getBtn{
     
     
+    NSString *kGlobalHost1 = @"http://service.picasso.adesk.com";
+    
+    NSString *kFirsterUrl = [NSString stringWithFormat:@"%@%@",kGlobalHost1,@"/v1/wallpaper/category"];
+    
+    [YHNetworkHelper requestGETWithRequestURL:kFirsterUrl parameters:nil success:^(id  _Nullable responseObject) {
+       
+        NSLog(@"requestGETWithRequestURL === %@",responseObject);
+        
+    } failure:^(NSError * _Nullable error) {
+        
+    }];
     
 }
 
@@ -146,11 +133,79 @@
 
 -(void)PostImageBtnClick:(UIButton *)postImageBtn{
     
+       NSMutableArray *ImagesArr = [NSMutableArray array];
+    
+        NSString *requestURL = [NSString stringWithFormat:@"%@%@", @"http://10.1.236.163:8080/bchz-web-server", @"/app/IcUserInfo/uploadImgFile"];
+        UIImage *image = [UIImage imageNamed:@"pic_zwwl"];
+        NSData *fileData = UIImageJPEGRepresentation(image, 0.05);    
+        WYFileModel *model = [[WYFileModel alloc] init];
+        model.fileName = @"picture";
+        model.fileData = fileData;
+        model.fileImage = image;
+        model.mimeType = @"image/jpeg";
+        model.folderName = @"BeiChen.jpg";
+    
+        [ImagesArr addObject:model];
+    
+        NSMutableDictionary *param = [NSMutableDictionary dictionary];
+        param[@"file"] = @"picture";
+        param[@"userId"] = @"1132912043533783041";
+    
+    
+    [YHNetworkHelper setAFHTTPSessionManagerProperty:^(AFHTTPSessionManager * _Nullable sessionManager) {
+        [sessionManager.requestSerializer setValue:@"multipart/form-data" forHTTPHeaderField:@"Content-Type"];
+    }];
+    
+    
+    
+    
+    
+    [YHNetworkHelper uploadImagesWithURL:requestURL parameters:param fileModelArray:ImagesArr progress:^(NSProgress * _Nullable progress) {
+        
+    } success:^(id  _Nullable responseObject) {
+       
+        NSLog(@"responseObject ==  %@",responseObject);
+        
+    } failure:^(NSError * _Nullable error) {
+        
+    }];
+    
+    
 }
 
 -(void)PostDownloadBtnClick:(UIButton *)postDownloadBtn{
     
+
+    
+    NSURL *url = [NSURL URLWithString:@"http://www.baidu.com/img/bdlogo.png"];
+    
+    [YHNetworkHelper setAFHTTPSessionManagerProperty:^(AFHTTPSessionManager *sessionManager) {
+        [sessionManager.requestSerializer setValue:@"text/html;charset=utf-8"forHTTPHeaderField:@"Content-Type"];
+    }];
+
+
+    
+    
+    [YHNetworkHelper downLoadWithURL:url fileSavePath:nil progress:^(NSProgress * _Nullable progress) {
+        
+    } success:^(NSURLResponse * _Nonnull response, NSURL * _Nullable filePath) {
+       
+        NSLog(@"filePath ==  %@",filePath);
+        
+    } failure:^(NSError * _Nullable error) {
+        
+    }];
+    
+    
+    
 }
 
+
+-(NSString *)URLDecodedString:(NSString *)str
+{
+    NSString *decodedString=(__bridge_transfer NSString *)CFURLCreateStringByReplacingPercentEscapesUsingEncoding(NULL, (__bridge CFStringRef)str, CFSTR(""), CFStringConvertNSStringEncodingToEncoding(NSUTF8StringEncoding));
+    
+    return decodedString;
+}
 
 @end

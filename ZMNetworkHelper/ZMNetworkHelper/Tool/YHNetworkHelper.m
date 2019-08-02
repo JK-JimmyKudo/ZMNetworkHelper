@@ -14,12 +14,14 @@
 
 static AFHTTPSessionManager *_sessionManager = nil ;
 
+#pragma mark - GET请求
 
 + (void)requestGETWithRequestURL:(NSString *)requestURLString parameters:(id)parameters success:(YHHttpRequestSuccess)success failure:(YHHttpRequestFailed)failure{
     
     [_sessionManager GET:requestURLString parameters:parameters progress:^(NSProgress * _Nonnull downloadProgress) {
 
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
         success(responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"%@",error);
@@ -27,22 +29,14 @@ static AFHTTPSessionManager *_sessionManager = nil ;
     }];
 }
 
+#pragma mark - post请求
+
 + (void)requestPOSTWithRequestURL:(NSString *)requestURLString parameters:(id)parameters success:(YHHttpRequestSuccess)success failure:(YHHttpRequestFailed)failure{
-    
-    
-    
     
     [_sessionManager POST:requestURLString parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
-//        id request = [ZYCacheHelper getResponseCacheForKey:@"kkkk"];
-        
-//        NSLog(@"request ==  %@",request);
-        
-        
-//        [ZYCacheHelper saveResponseCache:responseObject forKey:@"kkkk"];
-        
         success(responseObject);
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -52,18 +46,10 @@ static AFHTTPSessionManager *_sessionManager = nil ;
 }
 
 
-/**
- *  POST多个文件上传(如图片、MP3、MP4等)
- *
- *  @param URLString    请求的链接
- *  @param parameters   请求的参数
- *  @param modelArray   存放待上传文件模型的数组
- *  @param progress     进度的回调
- *  @param success      上传成功的回调
- *  @param failure      上传失败的回调
- */
--(void)requestPOSTWithRequestURL:(NSString *)URLString parameters:(NSDictionary *)parameters fileModelArray:(NSArray<WYFileModel *> *)modelArray progress:(YHHttpProgress)progress success:(YHHttpRequestSuccess)success failure:(YHHttpRequestFailed)failure{
-    
+
+#pragma mark -上传单/多张图片
+
++(void)uploadImagesWithURL:(NSString *)URLString parameters:(NSDictionary *)parameters fileModelArray:(NSArray<WYFileModel *> *)modelArray progress:(YHHttpProgress)progress success:(YHHttpRequestSuccess)success failure:(YHHttpRequestFailed)failure{
     
     
     [_sessionManager POST:URLString parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
@@ -96,56 +82,7 @@ static AFHTTPSessionManager *_sessionManager = nil ;
     
 }
 
-/**
- *  POST单个文件上传(如图片、MP3、MP4等)
- *
- *  @param URLString    请求的链接
- *  @param parameters   请求的参数
- *  @param fileModel    待上传文件的模型
- *  @param progress     进度的回调
- *  @param success      上传成功的回调
- *  @param failure      上传失败的回调
- */
 
--(void) requestPOSTWithRequestURL:(NSString *)URLString parameters:(NSDictionary *)parameters fileModel:(WYFileModel *)fileModel progress:(YHHttpProgress)progress success:(YHHttpRequestSuccess)success failure:(YHHttpRequestFailed)failure{
-    
-
-    [_sessionManager.requestSerializer setValue:@"multipart/form-data" forHTTPHeaderField:@"Content-Type"];
-
-    NSMutableDictionary *param = [NSMutableDictionary dictionary];
-    param[@"file"] = @"picture";
-    param[@"userId"] = @"1132912043533783041";
-    
-    
-    [_sessionManager POST:URLString parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
-        
-        
-//        NSData *fileData = UIImageJPEGRepresentation(fileModel.fileImage, 0.05);
-
-        if (fileModel.fileData != nil) {
-            [formData appendPartWithFileData:fileModel.fileData name:fileModel.folderName fileName:fileModel.fileName mimeType:fileModel.mimeType];
-        }else{
-            
-        }
-        
-        fileModel.fileData = nil;
-        
-    } progress:^(NSProgress * _Nonnull uploadProgress) {
-        
-        if(progress) {progress(uploadProgress);}
-        
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        
-        if (success) {success(responseObject);}
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-        
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        
-        if (failure) {failure(error);}
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-    }];
-    
-}
 
 /**
  *  下载文件
@@ -158,7 +95,7 @@ static AFHTTPSessionManager *_sessionManager = nil ;
  *
  *  返回NSURLSessionDownloadTask实例，可用于暂停下载、继续下载、停止下载，暂停调用suspend方法，继续下载调用resume方法
  */
-- (NSURLSessionDownloadTask *)downLoadWithURL:(NSString *)URLString fileSavePath:(NSString *)filePath progress:(YHHttpProgress)progress success:(YHDownLoadSuccess)success failure:(YHHttpRequestFailed)failure {
++ (NSURLSessionDownloadTask *)downLoadWithURL:(NSURL *)downloadUrl fileSavePath:(NSString *)filePath progress:(YHHttpProgress)progress success:(YHDownLoadSuccess)success failure:(YHHttpRequestFailed)failure {
     
     
     // 下载任务
@@ -175,7 +112,11 @@ static AFHTTPSessionManager *_sessionManager = nil ;
      *      其中： filePath：真实路径 == 第三个参数的返回值
      *            error:错误信息
      */
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:URLString]];
+    
+    NSURLRequest *request = [NSURLRequest requestWithURL:downloadUrl];
+
+    NSLog(@"request ==  %@ URLString == %@",request,downloadUrl);
+
     NSURLSessionDownloadTask *downloadTask = [_sessionManager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
         if (progress) {progress(downloadProgress);}
         
@@ -240,9 +181,10 @@ static AFHTTPSessionManager *_sessionManager = nil ;
 + (void)load {
     [[AFNetworkReachabilityManager sharedManager] startMonitoring];
 }
+
+
 /**
  *  所有的HTTP请求共享一个AFHTTPSessionManager
- *  原理参考地址:http://www.jianshu.com/p/5969bbb4af9f
  */
 + (void)initialize {
     _sessionManager = [AFHTTPSessionManager manager];
@@ -257,7 +199,6 @@ static AFHTTPSessionManager *_sessionManager = nil ;
 }
 
 #pragma mark - 重置AFHTTPSessionManager相关属性
-
 + (void)setAFHTTPSessionManagerProperty:(void (^)(AFHTTPSessionManager *))sessionManager {
     sessionManager ? sessionManager(_sessionManager) : nil;
 }
