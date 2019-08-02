@@ -6,10 +6,10 @@
 //  Copyright © 2019 Henan XinKangqiao. All rights reserved.
 //
 
-#import "ZYCacheHelper.h"
+#import "YHCacheHelper.h"
 #import <YYCache.h>
 
-@implementation ZYCacheHelper
+@implementation YHCacheHelper
 static NSString *const NetworkResponseCache = @"NetworkResponseCache";
 static YYCache *_dataCache;
 static YYKVStorage *_diskCache;

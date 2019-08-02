@@ -7,11 +7,18 @@
 //
 
 #import "ViewController.h"
-#import "ZYNetworkHelper.h"
+#import "YHNetworkHelper.h"
 #import "ZMNetworkHelper-Swift.h"
 #import "WYFileModel.h"
+#import <Masonry.h>
 
 @interface ViewController ()
+
+@property (nonatomic,strong) UIButton *getBtn;
+@property (nonatomic,strong) UIButton *postBtn;
+@property (nonatomic,strong) UIButton *postImageBtn;
+@property (nonatomic,strong) UIButton *postDownloadBtn;
+
 
 @end
 
@@ -22,28 +29,65 @@
     
     
     
-    
-    HHHViewController *hh = [[HHHViewController alloc] init];
-    [self.view addSubview:hh.view];
-    
-    
-    NSDictionary *dic = @{@"city":@"北京市",
-                          @"cityCode":@"110100",
-                          @"pageIndex":[NSString stringWithFormat:@"%@",@"0"],
-                          @"pageSize":@"10"};
-    
-    NSString *url = @"http://10.1.236.163:8080/bchz-web-server/app/IcAdChannelInfo/appIndexInfo";
-    
-
-    
-    [[ZYNetworkHelper sharedInstance] requestPOSTWithRequestURL:url parameters:dic success:^(id responseObject) {
-        
-//        NSLog(@"responseObject ==  %@",responseObject);
-        
-        
-    } failure:^(NSError *error) {
-        
+    self.getBtn = [[UIButton alloc] init];
+    [self.getBtn setTitle:@"get请求" forState:UIControlStateNormal];
+    self.getBtn.backgroundColor = [UIColor redColor];
+    [self.getBtn addTarget:self action:@selector(GetBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.getBtn];
+    [self.getBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.mas_equalTo(self.view);
+        make.width.mas_equalTo(100);
+        make.height.mas_equalTo(50);
+        make.top.mas_equalTo(100);
     }];
+    
+    
+    self.postBtn = [[UIButton alloc] init];
+    [self.postBtn setTitle:@"post请求" forState:UIControlStateNormal];
+    [self.postBtn addTarget:self action:@selector(PostBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    self.postBtn.backgroundColor = [UIColor blueColor];
+
+    [self.view addSubview:self.postBtn];
+    [self.postBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.mas_equalTo(self.view);
+        make.width.mas_equalTo(100);
+        make.height.mas_equalTo(50);
+        make.top.mas_equalTo(self.getBtn.mas_bottom).offset(10);
+    }];
+    
+    
+    self.postImageBtn = [[UIButton alloc] init];
+    [self.postImageBtn setTitle:@"上传图片请求" forState:UIControlStateNormal];
+    [self.postImageBtn addTarget:self action:@selector(PostImageBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    self.postImageBtn.backgroundColor = [UIColor yellowColor];
+
+    [self.view addSubview:self.postImageBtn];
+    [self.postImageBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.mas_equalTo(self.view);
+        make.width.mas_equalTo(100);
+        make.height.mas_equalTo(50);
+        make.top.mas_equalTo(self.postBtn.mas_bottom).offset(10);
+    }];
+    
+    
+    
+    self.postDownloadBtn = [[UIButton alloc] init];
+    [self.postDownloadBtn setTitle:@"下载请求" forState:UIControlStateNormal];
+    [self.postDownloadBtn addTarget:self action:@selector(PostDownloadBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+    self.postDownloadBtn.backgroundColor = [UIColor orangeColor];
+
+    [self.view addSubview:self.postDownloadBtn];
+    [self.postDownloadBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.mas_equalTo(self.view);
+        make.width.mas_equalTo(100);
+        make.height.mas_equalTo(50);
+        make.top.mas_equalTo(self.postImageBtn.mas_bottom).offset(10);
+    }];
+    
+    
+    
+    
+   
     
     
     
@@ -73,45 +117,38 @@
 //    }];
 //
     
-    
-    
-    
-    // Do any additional setup after loading the view.
-    
-    /**
-     *  题目1：给定一个整数数组 nums 和一个目标值 target，请你在该数组中找出和为目标值的那两个整数，并返回他们的数组下标。
-     *  你可以假设每种输入只会对应一个答案。但是，你不能重复利用这个数组中同样的元素
-     *  注：此解决方法有问题，会申请大量内存，优化方向为动态hash表即官方解法。
-     *  e.g: 给定 nums = [], target = 9
-     *       因为 nums[0] + nums[1] = 2 + 7 = 9
-     *       所以返回 [0, 1]
-     * @param nums
-     * @param target
-     * @return
-     */
-    
+}
 
-//    NSArray *nums = @[@"2", @"7", @"11", @"15"];
-//    int target = 9+9;
-//    
-//    int min = 0;
-//    int max = 0;
-//    int index = 0;
-//    for (int i = 0; i < nums.count; i++) {
-//        
-//        min = [nums[i] intValue];
-//        
-//        if ((min + max) == target) {
-//            NSLog(@" ==  %d == %ld",index,(long)i);
-//            break;
-//        }else{
-//            max = min;
-//            index = i;
-//            NSLog(@"=== %d === %d",max,min);
-//        }
-//    }
+-(void)GetBtnClick:(UIButton *)getBtn{
     
     
+    
+}
+
+-(void)PostBtnClick:(UIButton *)postBtn{
+    NSDictionary *dic = @{@"city":@"北京市",
+                          @"cityCode":@"110100",
+                          @"pageIndex":[NSString stringWithFormat:@"%@",@"0"],
+                          @"pageSize":@"10"};
+    
+    NSString *url = @"http://10.1.236.163:8080/bchz-web-server/app/IcAdChannelInfo/appIndexInfo";
+    
+    [YHNetworkHelper  requestPOSTWithRequestURL:url parameters:dic success:^(id responseObject) {
+    
+        
+        NSLog(@" ===  responseObject ==  %@",responseObject);
+        
+        
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
+-(void)PostImageBtnClick:(UIButton *)postImageBtn{
+    
+}
+
+-(void)PostDownloadBtnClick:(UIButton *)postDownloadBtn{
     
 }
 

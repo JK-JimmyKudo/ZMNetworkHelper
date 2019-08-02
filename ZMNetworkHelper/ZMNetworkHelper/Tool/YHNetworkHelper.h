@@ -11,21 +11,70 @@
 #import "WYFileModel.h"
 
 
-/** 请求成功的Block */
-typedef void(^ _Nullable Success)(id _Nullable responseObject);
-/** 请求失败的Block */
-typedef void(^ _Nullable Failure)(NSError * _Nullable error);
-///上传或者下载进度Block
-typedef void (^ _Nullable Progress)(NSProgress * _Nullable progress);
+typedef NS_ENUM(NSUInteger, YHNetworkStatusType) {
+    /// 未知网络
+    YHNetworkStatusUnknown,
+    /// 无网络
+    YHNetworkStatusNotReachable,
+    /// 手机网络
+    YHNetworkStatusReachableViaWWAN,
+    /// WIFI网络
+    YHNetworkStatusReachableViaWiFi
+};
+
+typedef NS_ENUM(NSUInteger, YHRequestSerializer) {
+    /// 设置请求数据为JSON格式
+    YHRequestSerializerJSON,
+    /// 设置请求数据为二进制格式
+    YHRequestSerializerHTTP,
+};
+
+typedef NS_ENUM(NSUInteger, YHResponseSerializer) {
+    /// 设置响应数据为JSON格式
+    YHResponseSerializerJSON,
+    /// 设置响应数据为二进制格式
+    YHResponseSerializerHTTP,
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/// 请求成功的Block
+typedef void(^YHHttpRequestSuccess)(id _Nullable  responseObject);
+
+/// 请求失败的Block
+typedef void(^YHHttpRequestFailed)(NSError * _Nullable error);
+
+/// 缓存的Block
+typedef void(^YHHttpRequestCache)(id _Nullable responseCache);
+
+/// 上传或者下载的进度, Progress.completedUnitCount:当前大小 - Progress.totalUnitCount:总大小
+typedef void (^YHHttpProgress)(NSProgress * _Nullable progress);
+
+/// 网络状态的Block
+//typedef void(^YHNetworkStatus)(YHNetworkStatusType status);
 
 ///下载成功的Blcok
-typedef void (^ _Nullable DownLoadSuccess)(NSURLResponse * _Nonnull response, NSURL * _Nullable filePath);
+typedef void (^ _Nullable YHDownLoadSuccess)(NSURLResponse * _Nonnull response, NSURL * _Nullable filePath);
 
-@interface ZYNetworkHelper : NSObject
+@class AFHTTPSessionManager;
 
-//+ (AFHTTPSessionManager *_Nullable)sharedInstance;
 
-+ (ZYNetworkHelper *_Nullable)sharedInstance;
+
+
+@interface YHNetworkHelper : NSObject
+
+
 
 #pragma mark - GET请求
 /**
@@ -36,10 +85,10 @@ typedef void (^ _Nullable DownLoadSuccess)(NSURLResponse * _Nonnull response, NS
  *  @param success    请求成功回调
  *  @param failure    请求失败回调
  */
-- (void) requestGETWithRequestURL:(NSString *_Nullable) requestURLString
++ (void) requestGETWithRequestURL:(NSString *_Nullable) requestURLString
                        parameters:(id _Nullable )parameters
-                          success:(Success)success
-                          failure:(Failure)failure;
+                          success:(YHHttpRequestSuccess _Nullable )success
+                          failure:(YHHttpRequestFailed _Nullable )failure;
 
 #pragma mark - POST请求
 /**
@@ -50,10 +99,20 @@ typedef void (^ _Nullable DownLoadSuccess)(NSURLResponse * _Nonnull response, NS
  *  @param success    请求成功回调
  *  @param failure    请求失败回调
  */
-- (void) requestPOSTWithRequestURL:(NSString *_Nullable) requestURLString
++ (void) requestPOSTWithRequestURL:(NSString *_Nullable) requestURLString
                         parameters:(id _Nullable )parameters
-                           success:(Success)success
-                           failure:(Failure)failure;
+                           success:(YHHttpRequestSuccess _Nullable )success
+                           failure:(YHHttpRequestFailed _Nullable )failure;
+
+
+
+
+
+
+
+
+
+
 
 
 /**
@@ -66,7 +125,7 @@ typedef void (^ _Nullable DownLoadSuccess)(NSURLResponse * _Nonnull response, NS
  *  @param success      上传成功的回调
  *  @param failure      上传失败的回调
  */
-- (void)requestPOSTWithRequestURL:(NSString *_Nullable)URLString parameters:(NSDictionary *_Nullable)parameters fileModelArray:(NSArray<WYFileModel *>*_Nullable)modelArray progress:(Progress)progress success:(Success)success failure:(Failure )failure;
++ (void)requestPOSTWithRequestURL:(NSString *_Nullable)URLString parameters:(NSDictionary *_Nullable)parameters fileModelArray:(NSArray<WYFileModel *>*_Nullable)modelArray progress:(YHHttpProgress _Nullable )progress success:(YHHttpRequestSuccess _Nullable )success failure:(YHHttpRequestFailed _Nullable )failure;
 
 
 /**
@@ -79,7 +138,7 @@ typedef void (^ _Nullable DownLoadSuccess)(NSURLResponse * _Nonnull response, NS
  *  @param success      上传成功的回调
  *  @param failure      上传失败的回调
  */
-- (void)requestPOSTWithRequestURL:(NSString *_Nullable)URLString parameters:(NSDictionary *_Nullable)parameters fileModel:(WYFileModel *_Nullable)fileModel progress:(Progress)progress success:(Success)success failure:(Failure)failure;
++ (void)requestPOSTWithRequestURL:(NSString *_Nullable)URLString parameters:(NSDictionary *_Nullable)parameters fileModel:(WYFileModel *_Nullable)fileModel progress:(YHHttpProgress _Nullable )progress success:(YHHttpRequestSuccess _Nullable )success failure:(YHHttpRequestFailed _Nullable )failure;
 
 
 
@@ -120,7 +179,7 @@ typedef void (^ _Nullable DownLoadSuccess)(NSURLResponse * _Nonnull response, NS
  *
  *  返回NSURLSessionDownloadTask实例，可用于暂停下载、继续下载、停止下载，暂停调用suspend方法，继续下载调用resume方法
  */
-- (NSURLSessionDownloadTask *_Nullable)downLoadWithURL:(NSString *_Nullable)URLString fileSavePath:(NSString *_Nullable)filePath progress:(Progress)progress success:(DownLoadSuccess)success failure:(Failure)failure;
++ (NSURLSessionDownloadTask *_Nullable)downLoadWithURL:(NSString *_Nullable)URLString fileSavePath:(NSString *_Nullable)filePath progress:(YHHttpProgress)progress success:(YHDownLoadSuccess)success failure:(YHHttpRequestFailed)failure;
 
 
 /**
@@ -140,5 +199,8 @@ typedef void (^ _Nullable DownLoadSuccess)(NSURLResponse * _Nonnull response, NS
  *  @param downloadTask    下载任务NSURLSessionDownloadTask的实例
  */
 + (void)downloadTaskStop:(NSURLSessionDownloadTask *_Nullable)downloadTask;
+
+
+
 
 @end

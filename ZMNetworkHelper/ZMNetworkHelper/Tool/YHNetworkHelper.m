@@ -6,63 +6,19 @@
 //  Copyright © 2017年 Brance. All rights reserved.
 //
 
-#import "ZYNetworkHelper.h"
+#import "YHNetworkHelper.h"
 #import "AFNetworkActivityIndicatorManager.h"
-#import "ZYCacheHelper.h"
+#import "YHCacheHelper.h"
 
-@implementation ZYNetworkHelper
+@implementation YHNetworkHelper
 
-static AFHTTPSessionManager *manager = nil ;
-
-static ZYNetworkHelper *httpRequest = nil;
-+ (ZYNetworkHelper *)sharedInstance
-{
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        if (httpRequest == nil) {
-            httpRequest = [[self alloc] init];
-        }
-    });
-    return httpRequest;
-}
-+(instancetype)allocWithZone:(struct _NSZone *)zone
-{
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        if (httpRequest == nil) {
-            httpRequest = [super allocWithZone:zone];
-        }
-    });
-    return httpRequest;
-}
-- (instancetype)copyWithZone:(NSZone *)zone
-{
-    return httpRequest;
-}
+static AFHTTPSessionManager *_sessionManager = nil ;
 
 
-
-+ (AFHTTPSessionManager *)sessionManager{
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-
-        manager = [AFHTTPSessionManager manager];
-        manager.responseSerializer = [AFJSONResponseSerializer serializer];
-        manager.requestSerializer = [AFJSONRequestSerializer serializer];
-        [manager.requestSerializer setValue:@"text/html;charset=utf-8"forHTTPHeaderField:@"Content-Type"];
-        //关闭缓存，避免干扰调试
-        manager.requestSerializer.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
-
-        manager.requestSerializer.timeoutInterval = 20;
-        manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/plain",@"text/json", @"text/javascript",@"text/html" ,nil];
-    });
-    return manager;
-}
-
-- (void)requestGETWithRequestURL:(NSString *)requestURLString parameters:(id)parameters success:(Success)success failure:(Failure)failure{
++ (void)requestGETWithRequestURL:(NSString *)requestURLString parameters:(id)parameters success:(YHHttpRequestSuccess)success failure:(YHHttpRequestFailed)failure{
     
-    [[ZYNetworkHelper sessionManager] GET:requestURLString parameters:parameters progress:^(NSProgress * _Nonnull downloadProgress) {
-        
+    [_sessionManager GET:requestURLString parameters:parameters progress:^(NSProgress * _Nonnull downloadProgress) {
+
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         success(responseObject);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -71,17 +27,21 @@ static ZYNetworkHelper *httpRequest = nil;
     }];
 }
 
-- (void)requestPOSTWithRequestURL:(NSString *)requestURLString parameters:(id)parameters success:(Success)success failure:(Failure)failure{
-    [[ZYNetworkHelper sessionManager] POST:requestURLString parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
++ (void)requestPOSTWithRequestURL:(NSString *)requestURLString parameters:(id)parameters success:(YHHttpRequestSuccess)success failure:(YHHttpRequestFailed)failure{
+    
+    
+    
+    
+    [_sessionManager POST:requestURLString parameters:parameters progress:^(NSProgress * _Nonnull uploadProgress) {
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
-        id request = [ZYCacheHelper getResponseCacheForKey:@"kkkk"];
+//        id request = [ZYCacheHelper getResponseCacheForKey:@"kkkk"];
         
 //        NSLog(@"request ==  %@",request);
         
         
-        [ZYCacheHelper saveResponseCache:responseObject forKey:@"kkkk"];
+//        [ZYCacheHelper saveResponseCache:responseObject forKey:@"kkkk"];
         
         success(responseObject);
         
@@ -102,12 +62,11 @@ static ZYNetworkHelper *httpRequest = nil;
  *  @param success      上传成功的回调
  *  @param failure      上传失败的回调
  */
--(void)requestPOSTWithRequestURL:(NSString *)URLString parameters:(NSDictionary *)parameters fileModelArray:(NSArray<WYFileModel *> *)modelArray progress:(Progress)progress success:(Success)success failure:(Failure)failure{
+-(void)requestPOSTWithRequestURL:(NSString *)URLString parameters:(NSDictionary *)parameters fileModelArray:(NSArray<WYFileModel *> *)modelArray progress:(YHHttpProgress)progress success:(YHHttpRequestSuccess)success failure:(YHHttpRequestFailed)failure{
     
     
-    AFHTTPSessionManager *mannger = [ZYNetworkHelper sessionManager];
     
-    [mannger POST:URLString parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+    [_sessionManager POST:URLString parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         
         for (int i = 0; i < modelArray.count; i++)
         {
@@ -148,18 +107,17 @@ static ZYNetworkHelper *httpRequest = nil;
  *  @param failure      上传失败的回调
  */
 
--(void) requestPOSTWithRequestURL:(NSString *)URLString parameters:(NSDictionary *)parameters fileModel:(WYFileModel *)fileModel progress:(Progress)progress success:(Success)success failure:(Failure)failure{
+-(void) requestPOSTWithRequestURL:(NSString *)URLString parameters:(NSDictionary *)parameters fileModel:(WYFileModel *)fileModel progress:(YHHttpProgress)progress success:(YHHttpRequestSuccess)success failure:(YHHttpRequestFailed)failure{
     
-    AFHTTPSessionManager *mannger = [ZYNetworkHelper sessionManager];
 
-    [manager.requestSerializer setValue:@"multipart/form-data" forHTTPHeaderField:@"Content-Type"];
+    [_sessionManager.requestSerializer setValue:@"multipart/form-data" forHTTPHeaderField:@"Content-Type"];
 
     NSMutableDictionary *param = [NSMutableDictionary dictionary];
     param[@"file"] = @"picture";
     param[@"userId"] = @"1132912043533783041";
     
     
-    [mannger POST:URLString parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+    [_sessionManager POST:URLString parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         
         
 //        NSData *fileData = UIImageJPEGRepresentation(fileModel.fileImage, 0.05);
@@ -200,9 +158,8 @@ static ZYNetworkHelper *httpRequest = nil;
  *
  *  返回NSURLSessionDownloadTask实例，可用于暂停下载、继续下载、停止下载，暂停调用suspend方法，继续下载调用resume方法
  */
-- (NSURLSessionDownloadTask *)downLoadWithURL:(NSString *)URLString fileSavePath:(NSString *)filePath progress:(Progress)progress success:(DownLoadSuccess)success failure:(Failure)failure {
+- (NSURLSessionDownloadTask *)downLoadWithURL:(NSString *)URLString fileSavePath:(NSString *)filePath progress:(YHHttpProgress)progress success:(YHDownLoadSuccess)success failure:(YHHttpRequestFailed)failure {
     
-    AFHTTPSessionManager *mannger = [ZYNetworkHelper sessionManager];
     
     // 下载任务
     /**
@@ -219,7 +176,7 @@ static ZYNetworkHelper *httpRequest = nil;
      *            error:错误信息
      */
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:URLString]];
-    NSURLSessionDownloadTask *downloadTask = [mannger downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
+    NSURLSessionDownloadTask *downloadTask = [_sessionManager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
         if (progress) {progress(downloadProgress);}
         
     } destination:^NSURL * _Nonnull(NSURL * _Nonnull targetPath, NSURLResponse * _Nonnull response) {
@@ -275,7 +232,68 @@ static ZYNetworkHelper *httpRequest = nil;
     downloadTask = nil;
 }
 
+#pragma mark - 初始化AFHTTPSessionManager相关属性
 
+/**
+ 开始监测网络状态
+ */
++ (void)load {
+    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
+}
+/**
+ *  所有的HTTP请求共享一个AFHTTPSessionManager
+ *  原理参考地址:http://www.jianshu.com/p/5969bbb4af9f
+ */
++ (void)initialize {
+    _sessionManager = [AFHTTPSessionManager manager];
+    _sessionManager.responseSerializer = [AFJSONResponseSerializer serializer];
+    _sessionManager.requestSerializer = [AFJSONRequestSerializer serializer];
+    [_sessionManager.requestSerializer setValue:@"text/html;charset=utf-8"forHTTPHeaderField:@"Content-Type"];
+    //关闭缓存，避免干扰调试
+    _sessionManager.requestSerializer.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
+
+    _sessionManager.requestSerializer.timeoutInterval = 20;
+    _sessionManager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/plain",@"text/json", @"text/javascript",@"text/html" ,nil];
+}
+
+#pragma mark - 重置AFHTTPSessionManager相关属性
+
++ (void)setAFHTTPSessionManagerProperty:(void (^)(AFHTTPSessionManager *))sessionManager {
+    sessionManager ? sessionManager(_sessionManager) : nil;
+}
+
++ (void)setRequestSerializer:(YHRequestSerializer)requestSerializer {
+    _sessionManager.requestSerializer = requestSerializer==YHRequestSerializerHTTP ? [AFHTTPRequestSerializer serializer] : [AFJSONRequestSerializer serializer];
+}
+
++ (void)setResponseSerializer:(YHResponseSerializer)responseSerializer {
+    _sessionManager.responseSerializer = responseSerializer==YHResponseSerializerHTTP ? [AFHTTPResponseSerializer serializer] : [AFJSONResponseSerializer serializer];
+}
+
++ (void)setRequestTimeoutInterval:(NSTimeInterval)time {
+    _sessionManager.requestSerializer.timeoutInterval = time;
+}
+
++ (void)setValue:(NSString *)value forHTTPHeaderField:(NSString *)field {
+    [_sessionManager.requestSerializer setValue:value forHTTPHeaderField:field];
+}
+
++ (void)openNetworkActivityIndicator:(BOOL)open {
+    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:open];
+}
+
++ (void)setSecurityPolicyWithCerPath:(NSString *)cerPath validatesDomainName:(BOOL)validatesDomainName {
+    NSData *cerData = [NSData dataWithContentsOfFile:cerPath];
+    // 使用证书验证模式
+    AFSecurityPolicy *securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate];
+    // 如果需要验证自建证书(无效证书)，需要设置为YES
+    securityPolicy.allowInvalidCertificates = YES;
+    // 是否需要验证域名，默认为YES;
+    securityPolicy.validatesDomainName = validatesDomainName;
+    securityPolicy.pinnedCertificates = [[NSSet alloc] initWithObjects:cerData, nil];
+    
+    [_sessionManager setSecurityPolicy:securityPolicy];
+}
 
 @end
 

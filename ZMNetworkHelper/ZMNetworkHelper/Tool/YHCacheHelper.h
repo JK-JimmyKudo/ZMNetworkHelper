@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ZYCacheHelper : NSObject
+@interface YHCacheHelper : NSObject
 /**
  *  缓存网络数据
  *
